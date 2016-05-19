@@ -1,0 +1,95 @@
+// Colors
+
+$border: #252525 !default;
+$option-hover: #252525 !default;
+$arrow-size: 6px !default;
+
+// Dropsy
+
+.dropsy-option-active {
+	background-color: $option-hover;
+	color: #fff;
+}
+
+.dropsy-wrap {
+	position: relative;
+	margin-bottom: 10px;
+	outline: none;
+
+	.dropsy-hide-me {
+		display: none;
+	}
+
+	.dropsy-label {
+		display: block;
+		width: 100%;
+		height: 20px;
+		border: solid 1px $border;
+		cursor: pointer;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	.dropsy-label-arrow {
+		display: inline-block;
+		float: right;
+
+		&:before {
+			content: '';
+			float: right;
+			display: block;
+			width: 0;
+			margin: 6px 10px 0 0;
+			border-bottom: 0 none;
+			border-top: solid $arrow-size #000;
+			border-left: solid $arrow-size transparent;
+			border-right: solid $arrow-size transparent;
+		}
+	}
+
+	.dropsy-label-text {
+		padding-left: 5px;
+	}
+
+	.dropsy-list {
+		display: none;
+		overflow: auto;
+		position: absolute;
+		min-width: 100%;
+		max-height: 100px;
+		margin: 0;
+		padding: 0;
+		background: #fff;
+		border: solid 1px $border;
+		list-style: none;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+
+		li {
+			padding-left: 5px;
+			cursor: pointer;
+
+			&.selected {
+				@extend .dropsy-option-active;
+			}
+
+			&:hover {
+				@extend .dropsy-option-active;
+			}
+		}
+	}
+
+	&.dropsy-open {
+		z-index: 1;
+
+		.dropsy-list {
+			display: block;
+		}
+
+		.dropsy-label-arrow {
+			border-top: 0 none;
+		}
+	}
+}
