@@ -10,10 +10,6 @@
   margin-bottom: 10px;
   outline: none;
 }
-/* line 19, ../scss/dropsy.scss */
-.dropsy-wrap .dropsy-hide-me {
-  display: none;
-}
 /* line 23, ../scss/dropsy.scss */
 .dropsy-wrap .dropsy-label {
   display: block;

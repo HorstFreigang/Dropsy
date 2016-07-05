@@ -1,17 +1,16 @@
 /**
  * Dropsy Version 0.9.2
  *
- * TODO: adding multiple select
- *
- * - removed unused blocks
- * - removed unnecessary options
+ * Author: Horst Freigang
+ * Web: http://horstfreigang.de
  *
  */
 
 ;(function($, window, document, undefined) {
 	var pluginName = 'dropsy',
 		defaults = {
-			type: 'single' // single or multiple selection
+			type: 'single',				// single or multiple selection
+			checkDisabled: false		// checks for occurance of the disabled property. may hav an impact on overall performance.
 		};
 		
 	function Dropsy(element, options, index) {
@@ -52,26 +51,29 @@
 		// append template after current SELECT
 		$(_select).after(template);
 		
-		var _parent = $('#dropsy-wrap-'+index);
+		var _dropsy = $('#dropsy-wrap-'+index);
+		
+		_dropsy.data('type', options.type);
+		_dropsy.data('checkDisabled', options.checkDisabled);
 		
 		// move current SELECT in template
-		_parent.find('.dropsy-hide-me').append($(_select));
+		_dropsy.find('.dropsy-hide-me').append($(_select));
 		
 		// update label text
-		_parent.find('.dropsy-label').find('span').text();
+		_dropsy.find('.dropsy-label').find('span').text();
 
 		// add properties from select to dropsy
 		if($(_select).prop('disabled') == true) {
-			_parent.addClass('dropsy-disabled');
+			_dropsy.addClass('dropsy-disabled');
 		}
 	}
 
 
 	// === create list function ===
 	function createList(index, _select, options) {
-		var _parent = $('#dropsy-wrap-'+index);
+		var _dropsy = $('#dropsy-wrap-'+index);
 
-		_parent.data('open', false);
+		_dropsy.data('open', false);
 		
 		$(_select).find('option').each(function() {
 			if($(this).prop('selected') == true) {
@@ -79,10 +81,10 @@
 			} else {
 				var listItem = '<li data-value="'+$(this).val()+'">'+$(this).text()+'</li>';
 			}
-			_parent.find('.dropsy-list').append(listItem);
+			_dropsy.find('.dropsy-list').append(listItem);
 		});
 		
-		_parent.find('.dropsy-label').find('.dropsy-label-text').text(_parent.find('li.selected').text());
+		_dropsy.find('.dropsy-label').find('.dropsy-label-text').text(_dropsy.find('li.selected').text());
 	}
 
 
@@ -96,17 +98,17 @@
 
 
 	// === open list ===
-	function openList(_parent) {
-		_parent.addClass('dropsy-open');
-		_parent.data('open', true);
+	function openList(_dropsy) {
+		_dropsy.addClass('dropsy-open');
+		_dropsy.data('open', true);
 	}
 
 
 	// === set events function ===
-	function updateValue(_parent, elm) {
+	function updateValue(_dropsy, elm) {
 		var value = $(elm).attr('data-value');
 
-		_parent.find('option').each(function() {
+		_dropsy.find('option').each(function() {
 			// set property of OPTION to none
 			$(this).prop('selected', '');
 
@@ -120,20 +122,28 @@
 		});
 	}
 
+	// === adds or removes disabled class ==
+	function disableDropsy(_select, _dropsy) {
+		if($(_select).prop('disabled') == true) {
+			_dropsy.addClass('dropsy-disabled');
+		} else {
+			_dropsy.removeClass('dropsy-disabled');
+		}
+	}
 
 	// === set events function ===
 	function setEvents(index, _select, options) {
-		var _parent = $('#dropsy-wrap-'+index);
-		var _list = _parent.find('.dropsy-list-wrap');
+		var _dropsy = $('#dropsy-wrap-'+index);
+		var _list = _dropsy.find('.dropsy-list-wrap');
 
 		// show dropdown
-		_parent.on('click', '.dropsy-label', function() {
-			if(_parent.hasClass('dropsy-disabled') == false) {
-				if(_parent.hasClass('dropsy-open') == true) {
+		_dropsy.on('click', '.dropsy-label', function() {
+			if(_dropsy.hasClass('dropsy-disabled') == false) {
+				if(_dropsy.hasClass('dropsy-open') == true) {
 					closeList(options);
 				} else {
 					closeList(options);
-					openList(_parent);
+					openList(_dropsy);
 				}
 			}
 		});
@@ -146,23 +156,27 @@
 		});
 
 		// options event
-		_parent.on('click', 'li', function(e) {
+		_dropsy.on('click', 'li', function(e) {
 			e.preventDefault();
-			updateValue(_parent, $(this));
-			updateDropsy(_select, _parent);
+			updateValue(_dropsy, $(this));
+			updateDropsy(_select, _dropsy);
 			sendOnChangeEvent(_select);
 			closeList(options);
 		});
 		
 		// update dropsy on select change
-		_parent.on('change', 'select', function(e) {
-			updateDropsy(_select, _parent);
+		_dropsy.on('change', 'select', function(e) {
+			updateDropsy(_select, _dropsy);
 		});
+
+		if(_dropsy.data('checkDisabled') == true) {
+			setInterval(disableDropsy.bind(null,_select, _dropsy), 1000);
+		}
 	}
 
 	
 	// === update dropsy function ===
-	function updateDropsy(_select, _parent) {
+	function updateDropsy(_select, _dropsy) {
 		// get value of SELECT
 		var value = $(_select).val();
 		
@@ -170,7 +184,7 @@
 		var text = $(_select).find('option:selected').text();
 
 		// remove and add selected-class from/to LIs
-		_parent.find('li').each(function() {
+		_dropsy.find('li').each(function() {
 			$(this).removeClass('selected');
 
 			if($(this).attr('data-value') == value) {
@@ -179,14 +193,9 @@
 		});
 		
 		// fill dropsy label width current value
-		_parent.find('.dropsy-label').find('.dropsy-label-text').text(text);
+		_dropsy.find('.dropsy-label').find('.dropsy-label-text').text(text);
 
-		// adds or removes disabled class
-		if($(_select).prop('disabled') == true) {
-			_parent.addClass('dropsy-disabled');
-		} else {
-			_parent.removeClass('dropsy-disabled');
-		}
+		disableDropsy(_select, _dropsy);
 	}
 
 	// === send onchange event ===

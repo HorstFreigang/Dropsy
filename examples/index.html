@@ -7,21 +7,43 @@
 		<link href="../dist/css/dropsy.css" rel="stylesheet" />
 		<link href="css/demo.css" rel="stylesheet" />
 		<script src="../libs/jquery-2.2.3.min.js"></script>
-		<script src="../dist/js/jquery-dropsy.0.9.2.js"></script>
+		<script src="../dist/js/jquery-dropsy.js"></script>
 		<script>
 			$(function() {
-				$('.dropsy').dropsy();
+				$('.dropsy').dropsy({
+					checkDisabled: true
+				});
 
 				$('.dropsy').on('change', function() {
 					console.log($(this).val());
 				});
+
+
+				$('.disable-enable').on('click', function() {
+					var $target = $($(this).attr('data-target'));
+
+					if($target.prop('disabled') == false) {
+						$target.prop('disabled', 'disabled');
+						$(this).text('Select #2 aktivieren');
+					} else {
+						$target.prop('disabled', '');
+						$(this).text('Select #2 deaktivieren');
+					}
+				});
+
 			});
 		</script>
 	</head>
 
 	<body>
+		<fieldset>
+			<legend>Optionen</legend>
+			<button class="disable-enable" data-target="#select-1">#select-1 deaktivieren</button>
+			<button class="disable-enable" data-target="#select-2">#select-2 deaktivieren</button>
+		</fieldset>
 		<div class="container">
-			<select size="1" class="dropsy städte">
+			<p>Select #1</p>
+			<select size="1" id="select-1" class="dropsy staedte">
 				<option value="Augsburg">Augsburg</option>
 				<option value="Berlin">Berlin</option>
 				<option value="Chemnitz" selected>Chemnitz</option>
@@ -32,7 +54,8 @@
 				<option value="Magdeburg">Magdeburg</option>
 			</select>
 
-			<select size="1" class="dropsy farben">
+			<p>Select #2</p>
+			<select size="1" id="select-2" class="dropsy farben">
 				<option value="Rot">Rot</option>
 				<option value="Blau">Blau</option>
 				<option value="Gelb">Gelb</option>
