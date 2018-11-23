@@ -17,7 +17,7 @@ $arrow-size: 6px !default;
 	outline: none;
 
 	.dropsy-hide-me {
-		//display: none;
+		display: none;
 	}
 
 	.dropsy-label {
@@ -32,7 +32,7 @@ $arrow-size: 6px !default;
 	}
 
 	.dropsy-label-arrow {
-		display: inline-block;
+		display: block;
 		float: right;
 
 		&:before {

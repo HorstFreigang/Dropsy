@@ -10,7 +10,7 @@
 	var pluginName = 'dropsy',
 		defaults = {
 			type: 'single',				// single or multiple selection
-			checkDisabled: false		// checks for occurance of the disabled property. may hav an impact on overall performance.
+			checkDisabled: false		// checks for occurance of the disabled property
 		};
 		
 	function Dropsy(element, options, index) {

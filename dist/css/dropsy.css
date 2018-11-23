@@ -10,6 +10,10 @@
   margin-bottom: 10px;
   outline: none;
 }
+/* line 19, ../scss/dropsy.scss */
+.dropsy-wrap .dropsy-hide-me {
+  display: none;
+}
 /* line 23, ../scss/dropsy.scss */
 .dropsy-wrap .dropsy-label {
   display: block;
@@ -23,7 +27,7 @@
 }
 /* line 34, ../scss/dropsy.scss */
 .dropsy-wrap .dropsy-label-arrow {
-  display: inline-block;
+  display: block;
   float: right;
 }
 /* line 38, ../scss/dropsy.scss */
