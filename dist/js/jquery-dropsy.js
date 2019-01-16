@@ -1,5 +1,5 @@
 /**
- * Dropsy Version 0.9.2
+ * Dropsy Version 0.9.2.1
  *
  * Author: Horst Freigang
  * Web: http://horstfreigang.de
@@ -21,14 +21,16 @@
 	}
 	
 	Dropsy.prototype.init = function() {
-		// create the template
-		createTemplate(this.index, this.elm, this.options);
+		if(typeof $(this.elm).data('no-dropsy') === 'undefined') {
+			// create the template
+			createTemplate(this.index, this.elm, this.options);
 
-		// create the list
-		createList(this.index, this.elm, this.options);
+			// create the list
+			createList(this.index, this.elm, this.options);
 
-		// set the events
-		setEvents(this.index, this.elm, this.options);
+			// set the events
+			setEvents(this.index, this.elm, this.options);
+		}
 	};
 
 	// === create tempate function ===
