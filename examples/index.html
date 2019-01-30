@@ -19,6 +19,25 @@
 				});
 
 
+
+
+				$('.change').on('click', function() {
+					var $target = $($(this).attr('data-target'));
+					var newOptions = [
+						'<option value="1">Neu 1</option>',
+						'<option value="2">Neu 2</option>',
+						'<option value="3">Neu 3</option>',
+						'<option value="4">Neu 4</option>',
+						'<option value="5">Neu 5</option>'
+					];
+
+					$target.find('option').remove();
+
+					for(var option of newOptions) {
+						$target.append(option);
+					}
+				});
+
 				$('.disable-enable').on('click', function() {
 					var $target = $($(this).attr('data-target'));
 
@@ -40,6 +59,8 @@
 			<legend>Optionen</legend>
 			<button class="disable-enable" data-target="#select-1">#select-1 deaktivieren</button>
 			<button class="disable-enable" data-target="#select-2">#select-2 deaktivieren</button>
+			<button class="change" data-target="#select-1">#select-1 Optionen ändern</button>
+			<button class="change" data-target="#select-3">#select-3 Optionen ändern</button>
 		</fieldset>
 		<div class="container">
 			<p>Select #1</p>
@@ -56,6 +77,16 @@
 
 			<p>Select #2</p>
 			<select size="1" id="select-2" class="dropsy farben" data-no-dropsy>
+				<option value="Rot">Rot</option>
+				<option value="Blau">Blau</option>
+				<option value="Gelb">Gelb</option>
+				<option value="Grün">Grün</option>
+				<option value="Violett">Violett</option>
+				<option value="Purpur">Purpur</option>
+			</select>
+
+			<p>Select #3</p>
+			<select size="1" id="select-3" class="dropsy farben">
 				<option value="Rot">Rot</option>
 				<option value="Blau">Blau</option>
 				<option value="Gelb">Gelb</option>

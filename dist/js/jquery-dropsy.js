@@ -68,6 +68,10 @@
 		if($(_select).prop('disabled') == true) {
 			_dropsy.addClass('dropsy-disabled');
 		}
+
+		$(_select)
+			.data('index', index)
+			.data('options', options);
 	}
 
 
@@ -124,7 +128,7 @@
 		});
 	}
 
-	// === adds or removes disabled class ==
+	// === adds or removes disabled class ===
 	function disableDropsy(_select, _dropsy) {
 		if($(_select).prop('disabled') == true) {
 			_dropsy.addClass('dropsy-disabled');
@@ -166,17 +170,33 @@
 			closeList(options);
 		});
 		
-		// update dropsy on select change
+		// update dropsy on select value change
 		_dropsy.on('change', 'select', function(e) {
 			updateDropsy(_select, _dropsy);
 		});
 
+		// update dropsy on select markup change
+		checkForDOMChange(_select);
+
+		function checkForDOMChange(target) {
+			var config = {attributes: false, childList: true, subtree: true};
+			var observer = new MutationObserver(observerCallback);
+			observer.observe(target, config);
+		}
+
+		function observerCallback(mutationList) {
+			if(mutationList.length > 0) {
+				$(_dropsy).find('li').remove();
+				createList($(_select).data('index'), _select, $(_select).data('options'));
+			}
+		}
+
+		// checkDisabled
 		if(_dropsy.data('checkDisabled') == true) {
 			setInterval(disableDropsy.bind(null,_select, _dropsy), 1000);
 		}
 	}
 
-	
 	// === update dropsy function ===
 	function updateDropsy(_select, _dropsy) {
 		// get value of SELECT
