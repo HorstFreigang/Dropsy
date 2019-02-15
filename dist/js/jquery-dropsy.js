@@ -82,12 +82,19 @@
 		_dropsy.data('open', false);
 		
 		$(_select).find('option').each(function() {
+			var $listItem = $('<li data-value="'+$(this).val()+'">'+$(this).text()+'</li>');
+
 			if($(this).prop('selected') == true) {
-				var listItem = '<li data-value="'+$(this).val()+'" class="selected">'+$(this).text()+'</li>';
-			} else {
-				var listItem = '<li data-value="'+$(this).val()+'">'+$(this).text()+'</li>';
+				$listItem.addClass('selected');
 			}
-			_dropsy.find('.dropsy-list').append(listItem);
+			
+			if($(this).prop('disabled') == true) {
+				$listItem.addClass('disabled');
+			}
+
+			// var listItem = '<li data-value="'+$(this).val()+'" class="selected">'+$(this).text()+'</li>';
+
+			_dropsy.find('.dropsy-list').append($listItem);
 		});
 		
 		_dropsy.find('.dropsy-label').find('.dropsy-label-text').text(_dropsy.find('li.selected').text());
@@ -164,10 +171,13 @@
 		// options event
 		_dropsy.on('click', 'li', function(e) {
 			e.preventDefault();
-			updateValue(_dropsy, $(this));
-			updateDropsy(_select, _dropsy);
-			sendOnChangeEvent(_select);
-			closeList(options);
+
+			if(!$(this).hasClass('disabled')) {
+				updateValue(_dropsy, $(this));
+				updateDropsy(_select, _dropsy);
+				sendOnChangeEvent(_select);
+				closeList(options);
+			}
 		});
 		
 		// update dropsy on select value change
